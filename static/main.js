@@ -9,15 +9,15 @@ class Profile {
 		this.password = password;
 	}	
 
-	createUser({username, firstName, lastName, password} , callback) {
-        return ApiConnector.createUser({username, firstName, lastName, password}, (err, data) => {
-        console.log(`Creating user: ${this.firstName}`);
+	createUser(callback) {
+        return ApiConnector.createUser({username: this.username, name: this.name, password: this.password},(err, data) => {
+        console.log(`Creating user: ${this.username}`)
         callback(err, data);
         });
 	}
 
-	perfomLogin({username, password}, callback) {
-		return ApiConnector.perfomLogin({username, password}, (err, data) => {
+	performLogin(callback) {
+		return ApiConnector.performLogin({username: this.username, name: this.name, password: this.password}, (err, data) => {
         console.log(`Authorizing user: ${this.username}`);
         callback(err, data);
         });
@@ -25,7 +25,7 @@ class Profile {
 
 	addMoney({ currency, amount }, callback) {
 		return ApiConnector.addMoney({ currency, amount }, (err, data) => {
-        console.log(`Adding ${amount} of ${currency} to ${this.userame}`);
+        console.log(`Adding ${amount} of ${currency} to ${this.username}`);
         callback(err, data);
         });
 	}
@@ -46,51 +46,76 @@ class Profile {
 }
 
 function getStocks (callback) {
-	let curse = ApiConnector.getStocks();
-	return curse
+	return ApiConnector.getStocks((err, data) => {
+        if (err) {
+			console.error(`Error in getting curse`);
+		} else {
+			let curse = data; 
+			console.log(curse);
+		};
+    });
 }
 
-console.log(getStocks());
+getStocks();
 
 function main() {
-	const Ivan = new Profile({
-	    username: 'Ivan', 
-	    name: { firstName: 'Ivan', lastName: 'Petrov'}, 
-	    password: 'ivanpetrov',
+
+	const Ivan = new Profile('Ivan', {firstName: 'Ivan' ,lastName: 'Petrov'}, 'ivanpetrov');
+	
+	const Lena = new Profile('Lena', {firstName: 'Elena' ,lastName: 'Sokolova'}, 'lenasokol')
+
+	
+
+	Ivan.createUser((err, data) => {
+		if (err) {
+			console.error(`User ${this.username} is not created`);
+		} else {
+			console.log(`User ${this.username} is created`); 
+		}
 	});
 
-	const Lena = new Profile({
-		username: 'Lena', 
-		name: {firstName: 'Lena', lastName: 'Ivanova'}, 
-		password: 'lenaivanova',
+	Lena.createUser((err, data) => {
+		if (err) {
+			console.error(`User ${this.username} is not created`);
+		} else {
+			console.log(`User ${this.username} is created`); 
+		}
 	});
 
-	Ivan.createUser();
 
-	Ivan.perfomLogin();
+	Ivan.performLogin((err, data) => {
+		if (err) {
+			console.error(`User ${this.username} is not authorised`);
+		} else {
+			console.log(`${this.username} is authorised`); 
+		}
+	});
+
 
 	Ivan.addMoney({ currency: 'rub', amount: 150 } , (err, data) => {
 		if (err) {
-			console.error(`Error during add money to ${username}`);
+			console.error(`Error during add money to ${this.username}`);
 		} else {
-			console.log(`Added ${amount} to ${username}`); 
+			console.log(`Added ${amount} to ${this.username}`); 
 		};
 	});
 
+
 	Ivan.convertMoney({ fromCurrency: 'rub' , targetCurrency: 'Netcoins', targetAmount: 100 } , (err, data) => {
 		if (err) {
-			console.error(`Error during convercy of money to ${username}`);
+			console.error(`Error during convercy of money to ${this.username}`);
 		} else {
-			let convert = { name: targetCurrency, wallet: targetAmount, username: username };
+			let convert = { name: targetCurrency, wallet: targetAmount, username: this.username };
 			console.log(`Converted to coins ${convert}`);
 		};
 	});
+
 
 	Ivan.transferMoney({ to: 'Lena' , amount: 50 }, (err, data) => {
 		if (err) {
 			console.error(`Error during transfering money to ${to}`);
 		} else {
-			let convert = { name: targetCurrency, wallet: targetAmount, username: username };
+			let convert = { name: targetCurrency, wallet: targetAmount, username: this.username };
 			console.log(`${to} has got ${amount} of NETCOINS`);
 		};
 	});
