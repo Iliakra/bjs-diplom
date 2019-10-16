@@ -9,7 +9,7 @@ class Profile {
 		this.password = password;
 	}	
 
-	createUser(callback) {
+	createUser(callback ) {
         return ApiConnector.createUser({username: this.username, name: this.name, password: this.password},(err, data) => {
         console.log(`Creating user: ${this.username}`)
         callback(err, data);
@@ -68,44 +68,44 @@ function main() {
 
 	Ivan.createUser((err, data) => {
 		if (err) {
-			console.error(`User ${this.username} is not created`);
+			console.error(`User is not created`);
 		} else {
-			console.log(`User ${this.username} is created`); 
+			console.log(`User ${data.username} is created`); 
 		}
 	});
 
 	Lena.createUser((err, data) => {
 		if (err) {
-			console.error(`User ${this.username} is not created`);
+			console.error(`User is not created`);
 		} else {
-			console.log(`User ${this.username} is created`); 
+			console.log(`User ${data.username} is created`); 
 		}
 	});
 
 
 	Ivan.performLogin((err, data) => {
 		if (err) {
-			console.error(`User ${this.username} is not authorised`);
+			console.error(`User is not authorised`);
 		} else {
-			console.log(`${this.username} is authorised`); 
+			console.log(`${data.username} is authorised`); 
 		}
 	});
 
 
 	Ivan.addMoney({ currency: 'rub', amount: 150 } , (err, data) => {
 		if (err) {
-			console.error(`Error during add money to ${this.username}`);
+			console.error(`Error during add money`);
 		} else {
-			console.log(`Added ${amount} to ${this.username}`); 
+			console.log(`Added ${amount} to ${data.username}`); 
 		};
 	});
 
 
 	Ivan.convertMoney({ fromCurrency: 'rub' , targetCurrency: 'Netcoins', targetAmount: 100 } , (err, data) => {
 		if (err) {
-			console.error(`Error during convercy of money to ${this.username}`);
+			console.error(`Error during convercy of money`);
 		} else {
-			let convert = { name: targetCurrency, wallet: targetAmount, username: this.username };
+			let convert = { name: targetCurrency, wallet: targetAmount, username: data.username };
 			console.log(`Converted to coins ${convert}`);
 		};
 	});
@@ -113,15 +113,17 @@ function main() {
 
 	Ivan.transferMoney({ to: 'Lena' , amount: 50 }, (err, data) => {
 		if (err) {
-			console.error(`Error during transfering money to ${to}`);
+			console.error(`Error during transfering money`);
 		} else {
-			let convert = { name: targetCurrency, wallet: targetAmount, username: this.username };
+			let convert = { name: targetCurrency, wallet: targetAmount, username: data.username };
 			console.log(`${to} has got ${amount} of NETCOINS`);
 		};
 	});
 }
 
 main();
+
+
 
 
 
