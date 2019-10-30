@@ -75,29 +75,27 @@ function main() {
 				if (err) {
 					console.error(`User is not authorised`);
 				} else {
-					console.log(`${data.username} is authorised`); 
+					console.log(`Ivan is authorised`); 
 					Lena.createUser((err, data) => {
 						if (err) {
 							console.error(`User is not created`);
 						} else {
 							console.log(`User ${data.username} is created`); 
-							Ivan.addMoney({ currency: 'RUB', amount: 150 } , (err, data) => {
+							Ivan.addMoney({ currency: 'EUR', amount: 500 } , (err, data) => {
 								if (err) {
 									console.error(`Error during add money`);
 								} else {
-									console.log(`Added ${amount} to ${data.username}`); 
-									Ivan.convertMoney({ fromCurrency: 'RUB' , targetCurrency: 'Netcoins', targetAmount: 100 } , (err, data) => {
+									console.log(`Added 500 EUROS to Ivan`); 
+									Ivan.convertMoney({ fromCurrency: 'EUR' , targetCurrency: 'NETCOIN', targetAmount: 36 } , (err, data) => {
 										if (err) {
 											console.error(`Error during convercy of money`);
 										} else {
-											let convert = { name: targetCurrency, wallet: targetAmount, username: data.username };
-											console.log(`Converted to coins ${convert}`);
-											Ivan.transferMoney({ to: 'Lena' , amount: 50 }, (err, data) => {
+											console.log(`Converted to coins ${data}`);
+											Ivan.transferMoney({ to: 'Lena' , amount: 20 }, (err, data) => {
 												if (err) {
 													console.error(`Error during transfering money`);
 												} else {
-													let convert = { name: targetCurrency, wallet: targetAmount, username: data.username };
-													console.log(`${to} has got ${amount} of NETCOINS`);
+													console.log(`Lena has got 20 of NETCOINS`);
 												};
 											});
 										};
